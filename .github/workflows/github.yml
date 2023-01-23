@@ -1,26 +1,30 @@
 name: Demo jobs with bottle
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+
       - name: Install Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
       - name: Install deps
         run: pip install -r requirements.txt
+
       - name: Formatting...
         run: black main.py
+
       - name: Check linting...
         run: flake8 main.py
       
-  test:
+  tests:
     runs-on: ubuntu-latest
-    if: ${{ success() }}
+    needs: build
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
@@ -37,7 +41,7 @@ jobs:
         run: pytest test.py --doctest-modules
   deployment:
     runs-on: ubuntu-latest
-    if: ${{ success() }}
+    needs: tests
     steps:
       - name: Deploy...
         run: echo "Deploying..."
