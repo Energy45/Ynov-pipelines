@@ -47,7 +47,7 @@ jobs:
         run: echo "Deploying..."
   notify:
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: deployment
     if: ${{ always() }}
     steps:
       - name: Slack
