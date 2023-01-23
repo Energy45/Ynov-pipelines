@@ -21,6 +21,4 @@ jobs:
         run: flake8 main.py
       - name: Deployment...
         run: echo "Deployment..."
-      - name: Testing deployment
-        run: ping www.google.fr
-        
+
